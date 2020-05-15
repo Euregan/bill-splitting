@@ -9,7 +9,10 @@ const NumberInput = ({ children, value, onChange }) => (
       }
 
       input {
+        padding: 0.5rem;
         margin-top: 0.25rem;
+        border-radius: var(--dynamic-border-radius);
+        border: 0.05rem solid var(--border-color);
       }
     `}</style>
   </label>

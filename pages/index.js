@@ -113,13 +113,16 @@ const Home = () => {
           padding: 0;
 
           font-family: 'Fira Sans', sans-serif;
+          color: #333333;
 
           height: 100vh;
           background-color: #faf8ff;
 
-          --main-color: black;
+          --border-color: gray;
           --layout-margin: 3rem;
           --padding: 1.5rem;
+          --dynamic-border-radius: 0.15rem;
+          --border-color: #333333;
         }
 
         body {
@@ -142,6 +145,13 @@ const Home = () => {
 
         .revenues > * ~ * {
           margin-left: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+          .revenues > * ~ * {
+            margin-left: 0rem;
+            margin-top: 1rem;
+          }
         }
       `}</style>
       <style jsx>{`
@@ -179,6 +189,21 @@ const Home = () => {
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
           grid-gap: var(--layout-margin);
+        }
+
+        @media (max-width: 1024px) {
+          header {
+            align-items: center;
+          }
+
+          .revenues {
+            flex-direction: column;
+            margin-bottom: 2rem;
+          }
+
+          .splits {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
     </div>

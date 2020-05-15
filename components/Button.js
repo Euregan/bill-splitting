@@ -4,8 +4,9 @@ const Button = ({ children, onClick }) => (
     <style jsx>{`
       button {
         background-color: white;
-        border: 0.05rem solid gray;
-        border-radius: 0.15rem;
+        border: 0.05rem solid var(--border-color);
+        border-radius: var(--dynamic-border-radius);
+        padding: 1rem;
         cursor: pointer;
       }
     `}</style>

@@ -13,6 +13,7 @@ const Home = () => {
   const [equalContribution, setEqualContribution] = useState([])
   const [ratioedContribution, setRatioedContribution] = useState([])
   const [equalRemaining, setEqualRemaining] = useState([])
+  const [currency] = useState('€')
 
   useEffect(() => {
     setEqualContribution(revenues.map(() => spendings / revenues.length || 0))
@@ -68,6 +69,15 @@ const Home = () => {
       </header>
 
       <main>
+        <Card>
+          <p>
+            Have you ever thought about the way you split the bills when living together with someone? Have you gone the
+            50/50 route, or are you splitting according to one another's pay? If you took the time to pick a method,
+            rather than wing it, are you sure it's a really fair one? Below are the average man and woman earning in
+            France, along with average spending in housing, transportation and groceries. You can fill the values with
+            your own to try it out.
+          </p>
+        </Card>
         <Card className="parameters">
           <div className="revenues">
             {revenues.map((revenue, index) => (
@@ -92,19 +102,56 @@ const Home = () => {
             contributions={equalContribution}
             spendings={spendings}
             revenues={revenues}
-          />
+          >
+            <p>
+              The equal contribution repartition is quite easy: Simply split the bills by the number of household
+              members, each paying for an equal portion of the spendings.
+            </p>
+            <p>
+              Though it might seem fair, notice that the one earning less ends up with{' '}
+              <strong>
+                {Math.max(...revenues) - equalContribution[0] - (Math.min(...revenues) - equalContribution[0])}
+                {currency}
+              </strong>{' '}
+              less than the highest earner.
+            </p>
+          </Contributions>
           <Contributions
             name="Ratioed contribution"
             contributions={ratioedContribution}
             spendings={spendings}
             revenues={revenues}
-          />
+          >
+            <p>
+              The ratioed contribution is adjusted to every one's income: Everyone pays according to their earning, thus
+              leveling the amount given.
+            </p>
+            <p>
+              Even if at first thought it might sounds fair, the lowest earner still has{' '}
+              <strong>
+                {Math.max(...revenues) -
+                  Math.max(...ratioedContribution) -
+                  (Math.min(...revenues) - Math.min(...ratioedContribution))}
+                {currency}
+              </strong>{' '}
+              less than the highest earner after paying the bills.
+            </p>
+          </Contributions>
           <Contributions
             name="Equal remaining"
             contributions={equalRemaining}
             spendings={spendings}
             revenues={revenues}
-          />
+          >
+            <p>
+              The equal remaining calculation however does not try to mitigate contributions: It effectively make sure
+              everyone ends up with the same amount to spend after the bills are paid
+            </p>
+            <p>
+              Here the lowest earner has exactly <strong>0{currency}</strong> less than the highest earner after the
+              bills are paid.
+            </p>
+          </Contributions>
         </div>
       </main>
       <style jsx global>{`
@@ -143,6 +190,14 @@ const Home = () => {
           max-width: 2rem;
         }
 
+        main > * ~ * {
+          margin-top: var(--layout-margin);
+        }
+
+        .revenues {
+          margin-bottom: 1rem;
+        }
+
         .revenues > * ~ * {
           margin-left: 1rem;
         }
@@ -174,7 +229,6 @@ const Home = () => {
 
         .revenues {
           display: flex;
-          margin-bottom: 1rem;
         }
 
         .spendings {
@@ -189,6 +243,11 @@ const Home = () => {
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
           grid-gap: var(--layout-margin);
+        }
+
+        p {
+          line-height: 1.5rem;
+          margin: 0;
         }
 
         @media (max-width: 1024px) {

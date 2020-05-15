@@ -1,209 +1,188 @@
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import Logo from 'components/Logo'
+import Button from 'components/Button'
+import Revenue from 'components/Revenue'
+import Contributions from 'components/Contributions'
+import Card from 'components/Card'
+import NumberInput from 'components/NumberInput'
 
-export default function Home() {
+const Home = () => {
+  const [revenues, setRevenues] = useState([0, 0])
+  const [spendings, setSpendings] = useState(0)
+  const [equalContribution, setEqualContribution] = useState([])
+  const [ratioedContribution, setRatioedContribution] = useState([])
+  const [equalRemaining, setEqualRemaining] = useState([])
+
+  useEffect(() => {
+    setEqualContribution(revenues.map(() => spendings / revenues.length || 0))
+  }, [revenues, spendings])
+  useEffect(() => {
+    setRatioedContribution(
+      revenues.map(
+        (revenue) => Math.round((revenue / revenues.reduce((acc, revenue) => acc + revenue, 0)) * spendings) || 0
+      )
+    )
+  }, [revenues, spendings])
+  useEffect(() => {
+    {
+      let remainingToPay = spendings
+      let remainingRevenues = revenues.slice()
+
+      while (remainingToPay > 0 && Math.max(...remainingRevenues) !== Math.min(...remainingRevenues)) {
+        const higherstEarner = remainingRevenues.reduce(
+          (highest, revenue, index) => (revenue > highest.revenue ? { index, revenue } : highest),
+          { revenue: -Infinity }
+        )
+        const lowestEarner = remainingRevenues.reduce(
+          (lowest, revenue, index) => (revenue < lowest.revenue ? { index, revenue } : lowest),
+          { revenue: +Infinity }
+        )
+        const highestEarnerContribution = higherstEarner.revenue - lowestEarner.revenue
+        remainingRevenues[higherstEarner.index] -= highestEarnerContribution
+        remainingToPay -= highestEarnerContribution
+      }
+
+      setEqualRemaining(
+        remainingRevenues.map((revenue, index) => revenues[index] - (revenue - remainingToPay / revenues.length) || 0)
+      )
+    }
+  }, [revenues, spendings])
+
   return (
-    <div className="container">
+    <div>
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Bill splitting</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+        <meta name="msapplication-TileColor" content="#da532c" />
+        <meta name="theme-color" content="#ffffff" />
       </Head>
 
+      <header>
+        <Logo />
+        <h1>Bill splitting</h1>
+      </header>
+
       <main>
-        <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
-
-        <div className="grid">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className="card">
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/zeit/next.js/tree/master/examples"
-            className="card"
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="card"
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <Card className="parameters">
+          <div className="revenues">
+            {revenues.map((revenue, index) => (
+              <Revenue
+                key={index}
+                number={index + 1}
+                revenue={revenue}
+                onRevenueChange={(revenue) =>
+                  setRevenues([...revenues.slice(0, index), revenue, ...revenues.slice(index + 1)])
+                }
+              />
+            ))}
+            <Button onClick={() => setRevenues([...revenues, 0])}>Add revenue</Button>
+          </div>
+          <NumberInput value={spendings} onChange={setSpendings}>
+            Spendings
+          </NumberInput>
+        </Card>
+        <div className="splits">
+          <Contributions
+            name="Equal contribution"
+            contributions={equalContribution}
+            spendings={spendings}
+            revenues={revenues}
+          />
+          <Contributions
+            name="Ratioed contribution"
+            contributions={ratioedContribution}
+            spendings={spendings}
+            revenues={revenues}
+          />
+          <Contributions
+            name="Equal remaining"
+            contributions={equalRemaining}
+            spendings={spendings}
+            revenues={revenues}
+          />
         </div>
       </main>
-
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
-        </a>
-      </footer>
-
-      <style jsx>{`
-        .container {
-          min-height: 100vh;
-          padding: 0 0.5rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer img {
-          margin-left: 0.5rem;
-        }
-
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .title a {
-          color: #0070f3;
-          text-decoration: none;
-        }
-
-        .title a:hover,
-        .title a:focus,
-        .title a:active {
-          text-decoration: underline;
-        }
-
-        .title {
+      <style jsx global>{`
+        html {
           margin: 0;
-          line-height: 1.15;
-          font-size: 4rem;
+          padding: 0;
+
+          font-family: 'Fira Sans', sans-serif;
+
+          height: 100vh;
+          background-color: #faf8ff;
+
+          --main-color: black;
+          --layout-margin: 3rem;
+          --padding: 1.5rem;
         }
 
-        .title,
-        .description {
-          text-align: center;
+        body {
+          margin: var(--layout-margin);
         }
 
-        .description {
-          line-height: 1.5;
-          font-size: 1.5rem;
+        @font-face {
+          font-family: 'Fira Sans';
+          src: url('FiraSans-Regular.ttf');
+        }
+        @font-face {
+          font-family: 'Fira Sans';
+          src: url('FiraSans-Bold.ttf');
+          font-weight: bold;
         }
 
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+        header > svg {
+          max-width: 2rem;
         }
 
-        .grid {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-
-          max-width: 800px;
-          margin-top: 3rem;
-        }
-
-        .card {
-          margin: 1rem;
-          flex-basis: 45%;
-          padding: 1.5rem;
-          text-align: left;
-          color: inherit;
-          text-decoration: none;
-          border: 1px solid #eaeaea;
-          border-radius: 10px;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-
-        .card:hover,
-        .card:focus,
-        .card:active {
-          color: #0070f3;
-          border-color: #0070f3;
-        }
-
-        .card h3 {
-          margin: 0 0 1rem 0;
-          font-size: 1.5rem;
-        }
-
-        .card p {
-          margin: 0;
-          font-size: 1.25rem;
-          line-height: 1.5;
-        }
-
-        .logo {
-          height: 1em;
-        }
-
-        @media (max-width: 600px) {
-          .grid {
-            width: 100%;
-            flex-direction: column;
-          }
+        .revenues > * ~ * {
+          margin-left: 1rem;
         }
       `}</style>
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
+      <style jsx>{`
+        header {
+          background: linear-gradient(135deg, #3c80e0, #6dceff);
+          color: white;
+          fill: white;
+          padding: var(--padding);
+          border-radius: 0.3rem;
+          display: flex;
+          margin-bottom: var(--layout-margin);
+          align-items: end;
+          box-shadow: 0px 20px 39px 3px rgba(0, 0, 0, 0.07);
         }
 
-        * {
-          box-sizing: border-box;
+        header > h1 {
+          margin: 0;
+          margin-left: 1rem;
+        }
+
+        .revenues {
+          display: flex;
+          margin-bottom: 1rem;
+        }
+
+        .spendings {
+          margin-top: 1rem;
+
+          display: flex;
+          flex-direction: column;
+        }
+
+        .splits {
+          margin-top: var(--layout-margin);
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          grid-gap: var(--layout-margin);
         }
       `}</style>
     </div>
   )
 }
+
+export default Home

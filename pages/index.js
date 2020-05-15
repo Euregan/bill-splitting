@@ -8,8 +8,8 @@ import Card from 'components/Card'
 import NumberInput from 'components/NumberInput'
 
 const Home = () => {
-  const [revenues, setRevenues] = useState([0, 0])
-  const [spendings, setSpendings] = useState(0)
+  const [revenues, setRevenues] = useState([2438, 1986])
+  const [spendings, setSpendings] = useState(1460)
   const [equalContribution, setEqualContribution] = useState([])
   const [ratioedContribution, setRatioedContribution] = useState([])
   const [equalRemaining, setEqualRemaining] = useState([])

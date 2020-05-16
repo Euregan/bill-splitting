@@ -146,13 +146,13 @@ const Home = () => {
         <p>
           A bug? A typo? Tell me on{' '}
           <a href="https://twitter.com/euregan" target="_blank">
-            twitter
+            Twitter
           </a>
         </p>
         <p>
           Want to contribute? Fork it on{' '}
           <a href="https://github.com/euregan/bill-splitting" target="_blank">
-            Github
+            GitHub
           </a>
         </p>
       </footer>

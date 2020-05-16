@@ -59,6 +59,7 @@ const Home = () => {
             {revenues.map((revenue, index) => (
               <Revenue
                 key={index}
+                currency={currency}
                 number={index + 1}
                 revenue={revenue}
                 onRevenueChange={(revenue) =>
@@ -68,13 +69,14 @@ const Home = () => {
             ))}
             <Button onClick={() => setRevenues([...revenues, 0])}>Add revenue</Button>
           </div>
-          <NumberInput value={spendings} onChange={setSpendings}>
+          <NumberInput value={spendings} onChange={setSpendings} currency={currency}>
             Spendings
           </NumberInput>
         </Card>
         <div className="splits">
           <Contributions
             name="Equal contribution"
+            currency={currency}
             contributions={equalContribution}
             spendings={spendings}
             revenues={revenues}
@@ -96,6 +98,7 @@ const Home = () => {
           </Contributions>
           <Contributions
             name="Ratioed contribution"
+            currency={currency}
             contributions={ratioedContribution}
             spendings={spendings}
             revenues={revenues}
@@ -117,6 +120,7 @@ const Home = () => {
           </Contributions>
           <Contributions
             name="Equal remaining"
+            currency={currency}
             contributions={equalRemaining}
             spendings={spendings}
             revenues={revenues}
@@ -187,6 +191,12 @@ const Home = () => {
 
         .revenues > * ~ * {
           margin-left: 1rem;
+        }
+
+        .parameters {
+          display: flex;
+          flex-direction: column;
+          align-items: baseline;
         }
 
         @media (max-width: 1024px) {

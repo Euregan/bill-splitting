@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import Card from 'components/Card'
 
-const Contributions = ({ name, contributions, spendings, revenues, children }) => {
+const Contributions = ({ name, contributions, spendings, revenues, currency, children }) => {
   const svgHeight = 150
   const svgWidth = 300
   const barWidth = (svgWidth - (revenues.length - 1) * 10) / revenues.length
@@ -36,6 +36,7 @@ const Contributions = ({ name, contributions, spendings, revenues, children }) =
               textAnchor="middle"
             >
               {revenues[index] - contribution}
+              {currency}
             </text>
             <text
               x={index * (barWidth + 10)}
@@ -45,6 +46,7 @@ const Contributions = ({ name, contributions, spendings, revenues, children }) =
               textAnchor="middle"
             >
               {contribution}
+              {currency}
             </text>
           </Fragment>
         ))}

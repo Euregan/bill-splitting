@@ -86,7 +86,9 @@ const Home = () => {
             <p>
               Though it might seem fair, notice that the one earning less ends up with{' '}
               <strong>
-                {Math.max(...revenues) - equalContribution[0] - (Math.min(...revenues) - equalContribution[0])}
+                {Math.max(...revenues) -
+                  Math.max(...equalContribution) -
+                  (Math.min(...revenues) - Math.min(...equalContribution))}
                 {currency}
               </strong>{' '}
               less than the highest earner.

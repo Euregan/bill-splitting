@@ -37,11 +37,13 @@ const Home = () => {
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
+
+        <meta property="og:title" content="Bill splitting" />
+        <meta property="og:image" content="/preview.png" />
+        <meta property="og:description" content="Small site to calculate how to split the bills fairly" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@euregan" />
-        <meta name="twitter:title" content="Bill splitting" />
-        <meta name="twitter:description" content="Small site to calculate how to split the bills fairly" />
-        <meta name="twitter:image" content="/preview.png" />
+        <meta name="twitter:creator" content="@euregan" />
       </Head>
 
       <header>

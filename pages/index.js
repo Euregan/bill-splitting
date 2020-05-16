@@ -142,6 +142,20 @@ const Home = () => {
           </Contributions>
         </div>
       </main>
+      <footer>
+        <p>
+          A bug? A typo? Tell me on{' '}
+          <a href="https://twitter.com/euregan" target="_blank">
+            twitter
+          </a>
+        </p>
+        <p>
+          Want to contribute? Fork it on{' '}
+          <a href="https://github.com/euregan/bill-splitting" target="_blank">
+            Github
+          </a>
+        </p>
+      </footer>
       {process.env.FATHOM && (
         <script src="https://cdn.usefathom.com/script.js" site={process.env.FATHOM} defer></script>
       )}
@@ -245,6 +259,16 @@ const Home = () => {
         p {
           line-height: 1.5rem;
           margin: 0;
+        }
+
+        footer {
+          margin-top: var(--layout-margin);
+          font-size: 0.75rem;
+          color: #999999;
+        }
+
+        footer a {
+          color: #999999;
         }
 
         @media (max-width: 1024px) {

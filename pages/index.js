@@ -214,6 +214,10 @@ const Home = () => {
         }
 
         @media (max-width: 1024px) {
+          html {
+            --layout-margin: 1rem;
+          }
+
           .revenues > * ~ * {
             margin-left: 0rem;
             margin-top: 1rem;

@@ -26,24 +26,57 @@ const ratioedContribution = (revenues, spendings) =>
   )
 
 const equalRemaining = (revenues, spendings) => {
-  let remainingToPay = spendings
-  let remainingRevenues = revenues.slice()
+  if (Math.max(...revenues) - Math.min(...revenues) < spendings) {
+    let remainingToPay = spendings
+    let remainingRevenues = revenues.slice()
 
-  while (remainingToPay > 0 && Math.max(...remainingRevenues) !== Math.min(...remainingRevenues)) {
-    const higherstEarner = remainingRevenues.reduce(
-      (highest, revenue, index) => (revenue > highest.revenue ? { index, revenue } : highest),
-      { revenue: -Infinity }
+    while (remainingToPay > 0 && Math.max(...remainingRevenues) !== Math.min(...remainingRevenues)) {
+      const highestEarner = remainingRevenues.reduce(
+        (highest, revenue, index) => (revenue > highest.revenue ? { index, revenue } : highest),
+        { revenue: -Infinity }
+      )
+      const lowestEarner = remainingRevenues.reduce(
+        (lowest, revenue, index) => (revenue < lowest.revenue ? { index, revenue } : lowest),
+        { revenue: +Infinity }
+      )
+      const highestEarnerContribution = highestEarner.revenue - lowestEarner.revenue
+      remainingRevenues[highestEarner.index] -= highestEarnerContribution
+      remainingToPay -= highestEarnerContribution
+    }
+
+    return remainingRevenues.map(
+      (revenue, index) => revenues[index] - (revenue - remainingToPay / revenues.length) || 0
     )
-    const lowestEarner = remainingRevenues.reduce(
-      (lowest, revenue, index) => (revenue < lowest.revenue ? { index, revenue } : lowest),
-      { revenue: +Infinity }
+  } else {
+    // If any of the earner cannot afford their share, they pay all they can and the rest is split among others
+    let earnersThatCantAfford = []
+    revenues.forEach((revenue, index) => {
+      if (Math.max(...revenues) >= revenue + spendings) {
+        earnersThatCantAfford.push(index)
+      }
+    })
+
+    let remainingToPay = spendings
+    let remainingRevenues = revenues.slice()
+
+    while (remainingToPay > 0 && Math.max(...remainingRevenues) !== Math.min(...remainingRevenues)) {
+      const highestEarner = remainingRevenues.reduce(
+        (highest, revenue, index) => (revenue > highest.revenue ? { index, revenue } : highest),
+        { revenue: -Infinity }
+      )
+      const lowestEarner = remainingRevenues.reduce(
+        (lowest, revenue, index) => (earnersThatCantAfford.includes(index) ? { index, revenue: 0 } : lowest),
+        { revenue: +Infinity }
+      )
+      const highestEarnerContribution = Math.min(highestEarner.revenue - lowestEarner.revenue, remainingToPay)
+      remainingRevenues[highestEarner.index] -= highestEarnerContribution
+      remainingToPay -= highestEarnerContribution
+    }
+
+    return remainingRevenues.map(
+      (revenue, index) => revenues[index] - (revenue - remainingToPay / revenues.length) || 0
     )
-    const highestEarnerContribution = higherstEarner.revenue - lowestEarner.revenue
-    remainingRevenues[higherstEarner.index] -= highestEarnerContribution
-    remainingToPay -= highestEarnerContribution
   }
-
-  return remainingRevenues.map((revenue, index) => revenues[index] - (revenue - remainingToPay / revenues.length) || 0)
 }
 
 export { equalContribution, ratioedContribution, equalRemaining }

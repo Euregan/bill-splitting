@@ -126,8 +126,14 @@ const Home = () => {
               everyone ends up with the same amount to spend after the bills are paid
             </p>
             <p>
-              Here the lowest earner has exactly <strong>0{currency}</strong> less than the highest earner after the
-              bills are paid.
+              Here the lowest earner has{' '}
+              <strong>
+                {Math.max(...revenues) -
+                  Math.max(...equalRemaining) -
+                  (Math.min(...revenues) - Math.min(...equalRemaining))}
+                {currency}
+              </strong>{' '}
+              less than the highest earner after the bills are paid.
             </p>
           </Contributions>
         </div>

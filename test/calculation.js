@@ -51,5 +51,6 @@ export default (t) => {
 
     t.equal(calculation.equalRemaining([1500, 1500], 900), [450, 450], 'should result in the right amounts')
     t.equal(calculation.equalRemaining([1700, 1500], 900), [550, 350], 'should result in the right amounts')
+    t.equal(calculation.equalRemaining([1500, 400], 900), [900, 0], 'should result in the right amounts')
   })
 }

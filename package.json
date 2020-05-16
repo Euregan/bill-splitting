@@ -5,12 +5,18 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "pta",
+    "test:watch": "nodemon --exec \"npm run test\""
   },
   "dependencies": {
     "next": "9.4.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-i18next": "^11.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4",
+    "pta": "^0.1.3"
   }
 }

@@ -1,7 +1,7 @@
 const equalContribution = (revenues, spendings) => {
   const share = spendings / revenues.length || 0
 
-  if (Math.min(...revenues) > share) {
+  if (Math.min(...revenues) >= share) {
     return revenues.map(() => share)
   } else {
     // If any of the earner cannot afford their share, they pay all they can and the rest is split among others

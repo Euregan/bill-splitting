@@ -16,6 +16,7 @@ export default (t) => {
 
     t.equal(calculation.equalContribution([1500, 1500], 900), [450, 450], 'should result in the right amounts')
     t.equal(calculation.equalContribution([1500, 400], 900), [500, 400], 'should result in the right amounts')
+    t.equal(calculation.equalContribution([1500, 450], 900), [450, 450], 'should result in the right amounts')
   })
 
   t.test('ratioed contribution', (t) => {

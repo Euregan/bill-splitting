@@ -1,4 +1,24 @@
-const equalContribution = (revenues, spendings) => revenues.map(() => spendings / revenues.length || 0)
+const equalContribution = (revenues, spendings) => {
+  const share = spendings / revenues.length || 0
+
+  if (Math.min(...revenues) > share) {
+    return revenues.map(() => share)
+  } else {
+    // If any of the earner cannot afford their share, they pay all they can and the rest is split among others
+    let paid = 0
+    let earnersThatCantAfford = new Map()
+    revenues.forEach((revenue, index) => {
+      if (revenue < share) {
+        paid += revenue
+        earnersThatCantAfford.set(index, revenue)
+      }
+    })
+    const newShare = (spendings - paid) / revenues.filter((revenue) => revenue > share).length
+    return revenues.map((revenue, index) =>
+      earnersThatCantAfford.has(index) ? earnersThatCantAfford.get(index) : newShare
+    )
+  }
+}
 
 const ratioedContribution = (revenues, spendings) =>
   revenues.map(

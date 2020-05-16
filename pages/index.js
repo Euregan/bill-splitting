@@ -6,6 +6,7 @@ import Revenue from 'components/Revenue'
 import Contributions from 'components/Contributions'
 import Card from 'components/Card'
 import NumberInput from 'components/NumberInput'
+import * as calculation from 'libs/calculation'
 
 const Home = () => {
   const [revenues, setRevenues] = useState([2438, 1986])
@@ -16,38 +17,13 @@ const Home = () => {
   const [currency] = useState('€')
 
   useEffect(() => {
-    setEqualContribution(revenues.map(() => spendings / revenues.length || 0))
+    setEqualContribution(calculation.equalContribution(revenues, spendings))
   }, [revenues, spendings])
   useEffect(() => {
-    setRatioedContribution(
-      revenues.map(
-        (revenue) => Math.round((revenue / revenues.reduce((acc, revenue) => acc + revenue, 0)) * spendings) || 0
-      )
-    )
+    setRatioedContribution(calculation.ratioedContribution(revenues, spendings))
   }, [revenues, spendings])
   useEffect(() => {
-    {
-      let remainingToPay = spendings
-      let remainingRevenues = revenues.slice()
-
-      while (remainingToPay > 0 && Math.max(...remainingRevenues) !== Math.min(...remainingRevenues)) {
-        const higherstEarner = remainingRevenues.reduce(
-          (highest, revenue, index) => (revenue > highest.revenue ? { index, revenue } : highest),
-          { revenue: -Infinity }
-        )
-        const lowestEarner = remainingRevenues.reduce(
-          (lowest, revenue, index) => (revenue < lowest.revenue ? { index, revenue } : lowest),
-          { revenue: +Infinity }
-        )
-        const highestEarnerContribution = higherstEarner.revenue - lowestEarner.revenue
-        remainingRevenues[higherstEarner.index] -= highestEarnerContribution
-        remainingToPay -= highestEarnerContribution
-      }
-
-      setEqualRemaining(
-        remainingRevenues.map((revenue, index) => revenues[index] - (revenue - remainingToPay / revenues.length) || 0)
-      )
-    }
+    setEqualRemaining(calculation.equalRemaining(revenues, spendings))
   }, [revenues, spendings])
 
   return (

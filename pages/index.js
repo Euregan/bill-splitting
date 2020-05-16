@@ -49,9 +49,9 @@ const Home = () => {
           <p>
             Have you ever thought about the way you split the bills when living together with someone? Have you gone the
             50/50 route, or are you splitting according to one another's pay? If you took the time to pick a method,
-            rather than wing it, are you sure it's a really fair one? Below are the average man and woman earning in
-            France, along with average spending in housing, transportation and groceries. You can fill the values with
-            your own to try it out.
+            rather than winging it, are you sure it's a really fair one? Below are the average man and woman earning in
+            France, along with average spending in housing, transportation and groceries. You can replace the values
+            with your own to try it out.
           </p>
         </Card>
         <Card className="parameters">
@@ -122,7 +122,7 @@ const Home = () => {
             revenues={revenues}
           >
             <p>
-              The equal remaining calculation however does not try to mitigate contributions: It effectively make sure
+              The equal remaining calculation however does not try to balance contributions: It effectively make sure
               everyone ends up with the same amount to spend after the bills are paid
             </p>
             <p>

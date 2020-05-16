@@ -130,6 +130,9 @@ const Home = () => {
           </Contributions>
         </div>
       </main>
+      {process.env.FATHOM && (
+        <script src="https://cdn.usefathom.com/script.js" site={process.env.FATHOM} defer></script>
+      )}
       <style jsx global>{`
         html {
           margin: 0;

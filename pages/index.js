@@ -37,6 +37,11 @@ const Home = () => {
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@euregan" />
+        <meta name="twitter:title" content="Bill splitting" />
+        <meta name="twitter:description" content="Small site to calculate how to split the bills fairly" />
+        <meta name="twitter:image" content="/preview.png" />
       </Head>
 
       <header>
@@ -62,7 +67,7 @@ const Home = () => {
                 currency={currency}
                 number={index + 1}
                 revenue={revenue}
-                onRevenueChange={(revenue) =>
+                onRevenueChange={revenue =>
                   setRevenues([...revenues.slice(0, index), revenue, ...revenues.slice(index + 1)])
                 }
               />

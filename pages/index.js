@@ -39,7 +39,7 @@ const Home = () => {
         <meta name="theme-color" content="#ffffff" />
 
         <meta property="og:title" content="Bill splitting" />
-        <meta property="og:image" content="/preview.png" />
+        <meta property="og:image" content="https://billsplitting.io/preview.png" />
         <meta property="og:description" content="Small site to calculate how to split the bills fairly" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@euregan" />

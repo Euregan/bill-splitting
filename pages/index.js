@@ -44,6 +44,8 @@ const Home = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@euregan" />
         <meta name="twitter:creator" content="@euregan" />
+
+        <meta name="google-site-verification" content="Gsf-EeE-vsaIAlrsF8Kd3fYnYQh_umV01TTHGfgwOXg" />
       </Head>
 
       <header>
@@ -69,7 +71,7 @@ const Home = () => {
                 currency={currency}
                 number={index + 1}
                 revenue={revenue}
-                onRevenueChange={revenue =>
+                onRevenueChange={(revenue) =>
                   setRevenues([...revenues.slice(0, index), revenue, ...revenues.slice(index + 1)])
                 }
               />

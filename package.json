@@ -10,7 +10,7 @@
     "test:watch": "nodemon --exec \"npm run test\""
   },
   "dependencies": {
-    "next": "9.4.0",
+    "next": "12.1.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-i18next": "^11.4.0"
